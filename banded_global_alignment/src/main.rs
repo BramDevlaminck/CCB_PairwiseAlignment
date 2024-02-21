@@ -4,7 +4,6 @@ use std::str::from_utf8;
 use clap::Parser;
 use fasta_reader::read_fasta;
 
-/// parse the arguments
 #[derive(Parser, Debug)]
 #[clap(allow_negative_numbers = true)]
 struct Args {

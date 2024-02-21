@@ -33,7 +33,7 @@ mod tests {
 
     #[test]
     fn read_fasta_test() -> Result<(), Box<dyn Error>> {
-        let (seq1, seq2) = read_fasta( "../tests/input.fasta")?;
+        let (seq1, seq2) = read_fasta("../tests/input.fasta")?;
         assert_eq!(seq1, "GATTACA");
         assert_eq!(seq2, "GCATGCU");
 

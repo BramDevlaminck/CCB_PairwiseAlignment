@@ -1,5 +1,5 @@
 [package]
-name = "needleman_wunch"
+name = "needleman_wunsch"
 version = "0.1.0"
 edition = "2021"
 

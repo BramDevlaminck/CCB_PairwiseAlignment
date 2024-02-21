@@ -5,5 +5,5 @@ members = [
     "banded_global_alignment",
     "fasta_reader",
     "hirschberg",
-    "needleman_wunch",
+    "needleman_wunsch",
 ]

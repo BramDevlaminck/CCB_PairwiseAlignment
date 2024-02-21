@@ -4,7 +4,6 @@ use clap::Parser;
 use fasta_reader::read_fasta;
 use hirschberg::hirschberg;
 
-/// parse the arguments
 #[derive(Parser, Debug)]
 #[clap(allow_negative_numbers = true)]
 struct Args {
@@ -22,7 +21,7 @@ struct Args {
     gap_score: i32,
 }
 
-fn main() -> Result<(), Box<dyn Error>>{
+fn main() -> Result<(), Box<dyn Error>> {
     let args = Args::parse();
     let Args { filename, match_score, mismatch_score, gap_score } = args;
     let (seq1, seq2) = read_fasta(&filename)?;

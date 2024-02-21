@@ -8,4 +8,4 @@ edition = "2021"
 [dependencies]
 clap = { version = "4.5.1", features = ["derive"] }
 fasta_reader = { path = "../fasta_reader" }
-needleman_wunch = { path = "../needleman_wunch" }
+needleman_wunsch = { path = "../needleman_wunsch" }

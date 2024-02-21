@@ -62,7 +62,6 @@ pub fn backtrack_alignment(matrix: &Vec<Vec<i32>>, seq1: &[u8], seq2: &[u8], gap
 }
 
 
-
 #[cfg(test)]
 mod tests {
     use std::error::Error;
@@ -108,7 +107,7 @@ mod tests {
 
     #[test]
     fn test_backtrack_seq1_empty() -> Result<(), Box<dyn Error>> {
-        let seq1 =  String::new();
+        let seq1 = String::new();
         let seq2 = "test".to_string();
         let seq1_chars = seq1.into_bytes();
         let seq2_chars = seq2.into_bytes();

@@ -2,9 +2,8 @@ use std::error::Error;
 use std::str::from_utf8;
 use clap::Parser;
 use fasta_reader::read_fasta;
-use needleman_wunch::{backtrack_alignment, construct_matrix};
+use needleman_wunsch::{backtrack_alignment, construct_matrix};
 
-/// parse the arguments
 #[derive(Parser, Debug)]
 #[clap(allow_negative_numbers = true)]
 struct Args {

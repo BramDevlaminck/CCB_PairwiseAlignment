@@ -1,7 +1,6 @@
 use std::cmp::max;
 use std::error::Error;
-use needleman_wunch::{backtrack_alignment, construct_matrix};
-
+use needleman_wunsch::{backtrack_alignment, construct_matrix};
 
 /// Calculate the needleman welsh score only using 2 rows
 pub fn nw_score(seq1: &[u8], seq2: &[u8], match_score: i32, mismatch_score: i32, gap_score: i32, reversed: bool) -> Vec<i32> {
