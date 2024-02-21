@@ -12,7 +12,7 @@ cargo build --release
 
 ### Overview
 
-This repository contains the code for following algorithms:
+This repository contains the code for the following algorithms:
 
 - [Needleman-Wunsch](./needleman_wunsch)
 - [Hirschberg](./hirschberg)
