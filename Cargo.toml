@@ -3,5 +3,6 @@ resolver = "2"
 
 members = [
     "banded_global_alignment",
+    "fasta_reader",
     "needleman_wunch",
 ]

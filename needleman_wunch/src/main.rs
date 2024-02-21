@@ -2,15 +2,15 @@ use std::cmp::max;
 use std::error::Error;
 use std::str::from_utf8;
 use clap::Parser;
+use fasta_reader::read_fasta;
 
 /// parse the arguments
 #[derive(Parser, Debug)]
 #[clap(allow_negative_numbers = true)]
 struct Args {
-    /// Sequence 1
-    seq1: String,
-    /// Sequence 2
-    seq2: String,
+    /// The input file name
+    #[clap(short, long)]
+    filename: String,
     /// The score used when there is a match
     #[clap(short, long, default_value_t = 1)]
     match_score: i32,
@@ -24,7 +24,8 @@ struct Args {
 
 fn main() -> Result<(), Box<dyn Error>> {
     let args = Args::parse();
-    let Args { seq1, seq2, match_score, mismatch_score, gap_score } = args;
+    let Args { filename, match_score, mismatch_score, gap_score } = args;
+    let (seq1, seq2) = read_fasta(&filename)?;
     let seq1_chars = seq1.into_bytes();
     let seq2_chars = seq2.into_bytes();
 
@@ -43,7 +44,7 @@ fn main() -> Result<(), Box<dyn Error>> {
             let diag_score = matrix[row - 1][col - 1] + if seq1_chars[col - 1] == current_seq2_char { match_score } else { mismatch_score };
             matrix[row][col] = max(
                 max(diag_score, matrix[row][col - 1] + gap_score),
-                matrix[row - 1][col] + gap_score
+                matrix[row - 1][col] + gap_score,
             );
         }
     }
@@ -63,7 +64,7 @@ fn main() -> Result<(), Box<dyn Error>> {
             diff_line.insert(0, b' ');
             aligned_seq2.insert(0, b'-');
             current_col -= 1;
-            continue
+            continue;
         }
 
         if current_row != 0 && matrix[current_row][current_col] == matrix[current_row - 1][current_col] + gap_score {
@@ -71,7 +72,7 @@ fn main() -> Result<(), Box<dyn Error>> {
             diff_line.insert(0, b' ');
             aligned_seq2.insert(0, seq2_chars[current_row - 1]);
             current_row -= 1;
-            continue
+            continue;
         }
 
         // diagonal case

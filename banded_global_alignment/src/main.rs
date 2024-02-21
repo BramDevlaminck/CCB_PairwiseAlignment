@@ -2,15 +2,15 @@ use std::cmp::{max, min};
 use std::error::Error;
 use std::str::from_utf8;
 use clap::Parser;
+use fasta_reader::read_fasta;
 
 /// parse the arguments
 #[derive(Parser, Debug)]
 #[clap(allow_negative_numbers = true)]
 struct Args {
-    /// Sequence 1
-    seq1: String,
-    /// Sequence 2
-    seq2: String,
+    /// The input file name
+    #[clap(short, long)]
+    filename: String,
     /// With of the band
     #[clap(short, long)]
     width: usize,
@@ -27,7 +27,8 @@ struct Args {
 
 fn main() -> Result<(), Box<dyn Error>> {
     let args = Args::parse();
-    let Args { seq1, seq2, width, match_score, mismatch_score, gap_score } = args;
+    let Args { filename, width, match_score, mismatch_score, gap_score } = args;
+    let (seq1, seq2) = read_fasta(&filename)?;
     let seq1_chars = seq1.into_bytes();
     let seq2_chars = seq2.into_bytes();
 
@@ -83,7 +84,7 @@ fn main() -> Result<(), Box<dyn Error>> {
             diff_line.insert(0, b' ');
             aligned_seq2.insert(0, b'-');
             current_col -= 1;
-        } else if  matrix[current_row - 1][current_col].is_some() && current_row != 0 && current_score == matrix[current_row - 1][current_col].unwrap() + gap_score {
+        } else if matrix[current_row - 1][current_col].is_some() && current_row != 0 && current_score == matrix[current_row - 1][current_col].unwrap() + gap_score {
             aligned_seq1.insert(0, b'-');
             diff_line.insert(0, b' ');
             aligned_seq2.insert(0, seq2_chars[current_row - 1]);
