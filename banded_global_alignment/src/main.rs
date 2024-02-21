@@ -35,17 +35,17 @@ fn main() -> Result<(), Box<dyn Error>> {
     let mut matrix: Vec<Vec<Option<i32>>> = vec![vec![None; seq1_chars.len() + 1]; seq2_chars.len() + 1];
 
     // initialize the first column and first row
-    matrix[0] = (0..seq1_chars.len() + 1).map(|i| Some(i as i32 * gap_score)).collect();
-    for (index, init_value) in (0..seq2_chars.len() + 1).enumerate() {
+    matrix[0] = (0..=seq1_chars.len()).map(|i| Some(i as i32 * gap_score)).collect();
+    for (index, init_value) in (0..=seq2_chars.len()).enumerate() {
         matrix[index][0] = Some(init_value as i32 * gap_score);
     }
 
     // fill in the matrix
-    for row in 1..seq2_chars.len() + 1 {
+    for row in 1..=seq2_chars.len() {
         let min_col = max(1, row as i32 - width as i32) as usize;
-        let max_col = min(seq1_chars.len() + 1, row + width);
+        let max_col = min(seq1_chars.len(), row + width);
         let current_seq2_char = seq2_chars[row - 1];
-        for col in min_col..max_col {
+        for col in min_col..=max_col {
             let mut diag_score = i32::MIN;
             if let Some(old_diag) = matrix[row - 1][col - 1] {
                 diag_score = old_diag + if seq1_chars[col - 1] == current_seq2_char { match_score } else { mismatch_score };
@@ -70,7 +70,7 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     let mut current_row = seq2_chars.len();
     let mut current_col = seq1_chars.len();
-    println!("Global score is: {}", matrix[current_row][current_col].ok_or("Value in the right bottom corner was not calculated")?);
+    println!("The score for optimal alignment is: {}", matrix[current_row][current_col].ok_or("Value in the right bottom corner was not calculated")?);
 
     // backtrack to find alignment
     let mut aligned_seq1: Vec<u8> = vec![];

@@ -2,7 +2,7 @@ use std::error::Error;
 use std::str::from_utf8;
 use clap::Parser;
 use fasta_reader::read_fasta;
-use needleman_wunch::{backtrack_alignment, construct_matrix};
+use hirschberg::hirschberg;
 
 /// parse the arguments
 #[derive(Parser, Debug)]
@@ -22,18 +22,15 @@ struct Args {
     gap_score: i32,
 }
 
-fn main() -> Result<(), Box<dyn Error>> {
+fn main() -> Result<(), Box<dyn Error>>{
     let args = Args::parse();
     let Args { filename, match_score, mismatch_score, gap_score } = args;
     let (seq1, seq2) = read_fasta(&filename)?;
     let seq1_chars = seq1.into_bytes();
     let seq2_chars = seq2.into_bytes();
 
-    let matrix = construct_matrix(&seq1_chars, &seq2_chars, match_score, mismatch_score, gap_score);
-    println!("The score for optimal alignment is: {}", matrix[seq2_chars.len()][seq1_chars.len()]);
-    let (aligned_seq1, diff_line, aligned_seq2) = backtrack_alignment(&matrix, &seq1_chars, &seq2_chars, gap_score);
+    let (aligned_seq1, diff_line, aligned_seq2) = hirschberg(&seq1_chars, &seq2_chars, match_score, mismatch_score, gap_score)?;
 
-    println!();
     println!("Aligned sequences:");
     println!("{}", from_utf8(&*aligned_seq1)?);
     println!("{}", from_utf8(&*diff_line)?);
