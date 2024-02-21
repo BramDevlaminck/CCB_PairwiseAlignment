@@ -1,0 +1,7 @@
+[workspace]
+resolver = "2"
+
+members = [
+    "banded_global_alignment",
+    "needleman_wunch",
+]
