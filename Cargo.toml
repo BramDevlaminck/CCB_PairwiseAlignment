@@ -6,4 +6,5 @@ members = [
     "fasta_reader",
     "hirschberg",
     "needleman_wunsch",
+    "needleman_wunsch_delta_encoded",
 ]
