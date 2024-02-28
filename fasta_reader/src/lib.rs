@@ -10,17 +10,22 @@ fn read_lines<P>(filename: P) -> io::Result<io::Lines<io::BufReader<File>>>
     Ok(io::BufReader::new(file).lines())
 }
 
-// TODO: this implementation is very simple, in general fasta sequences can span multiple lines, only lines that start with '>' should be ignored
 pub fn read_fasta(file: &str) -> Result<(String, String), Box<dyn Error>> {
     let mut sequences: Vec<String> = vec![];
 
-    for (i, line) in read_lines(file)?.flatten().enumerate() {
-        // even lines only contain headers, skip them
-        if i % 2 == 0 {
-            continue;
+    let mut current_sequence = String::new();
+    for line in read_lines(file)?.flatten() {
+        // skip header and push currently accumulated protein (if it is not empty, since that happens when, encountering the first header)
+        if line.starts_with('>') {
+            if !current_sequence.is_empty() {
+                sequences.push(current_sequence);
+                current_sequence = String::new();
+            }
+        } else {
+            current_sequence += line.strip_suffix('\n').unwrap_or(&*line);
         }
-        sequences.push(line);
     }
+    sequences.push(current_sequence);
 
     let seq1 = sequences.swap_remove(0);
     let seq2 = sequences.swap_remove(0);
@@ -35,6 +40,15 @@ mod tests {
     #[test]
     fn read_fasta_test() -> Result<(), Box<dyn Error>> {
         let (seq1, seq2) = read_fasta("../tests/input.fasta")?;
+        assert_eq!(seq1, "GATTACA");
+        assert_eq!(seq2, "GCATGCU");
+
+        Ok(())
+    }
+
+    #[test]
+    fn read_multiline_fasta_test() -> Result<(), Box<dyn Error>> {
+        let (seq1, seq2) = read_fasta("../tests/multiline_input.fasta")?;
         assert_eq!(seq1, "GATTACA");
         assert_eq!(seq2, "GCATGCU");
 
