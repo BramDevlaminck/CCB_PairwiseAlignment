@@ -10,6 +10,7 @@ fn read_lines<P>(filename: P) -> io::Result<io::Lines<io::BufReader<File>>>
     Ok(io::BufReader::new(file).lines())
 }
 
+// TODO: this implementation is very simple, in general fasta sequences can span multiple lines, only lines that start with '>' should be ignored
 pub fn read_fasta(file: &str) -> Result<(String, String), Box<dyn Error>> {
     let mut sequences: Vec<String> = vec![];
 

@@ -24,6 +24,8 @@ struct Args {
     gap_score: i32,
 }
 
+// TODO: improve implementation.
+//  We don't need to store the whole matrix, only the band needs to be stored
 fn main() -> Result<(), Box<dyn Error>> {
     let args = Args::parse();
     let Args { filename, width, match_score, mismatch_score, gap_score } = args;
