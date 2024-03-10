@@ -4,6 +4,8 @@ use crate::bitpal_errors::InputTooLongError;
 
 mod bitpal_errors;
 
+/// The BitPAl algorithm implemented for scoring: M = 1, I = -1, G = -3
+/// With the restriction that seq1 or seq2 needs to fit in 1 computer word (= seq1 or seq2 < 64 characters)
 pub fn bitpal(seq1: &Vec<u8>, seq2: &Vec<u8>) -> Result<i32, InputTooLongError> {
     // check validity of input
     let (ref horizontal_seq, vertical_seq) = if seq1.len() < 64 {
@@ -243,6 +245,49 @@ mod tests {
         // make seq2 the sequence that should be horizontal
         let seq1 = generate_sequence_with_alphabet(&valid_letters, &mut rng, 64..65);
         let seq2 = generate_sequence_with_alphabet(&valid_letters, &mut rng, 1..64);
+        let matrix = construct_matrix(&seq1, &seq2, 1, -1, -3);
+        let nw_score = matrix[seq2.len()][seq1.len()];
+        let bitpal = bitpal(&seq1, &seq2)?;
+        assert_eq!(bitpal, nw_score);
+
+        Ok(())
+    }
+
+    #[test]
+    fn test_bitpal_seq1_empty() -> Result<(), Box<dyn Error>> {
+        let mut rng = rand::thread_rng();
+        let valid_letters = vec![b'A', b'C', b'G', b'T'];
+        // make seq2 the sequence that should be horizontal
+        let seq1 = vec![];
+        let seq2 = generate_sequence_with_alphabet(&valid_letters, &mut rng, 1..64);
+        let matrix = construct_matrix(&seq1, &seq2, 1, -1, -3);
+        let nw_score = matrix[seq2.len()][seq1.len()];
+        let bitpal = bitpal(&seq1, &seq2)?;
+        assert_eq!(bitpal, nw_score);
+
+        Ok(())
+    }
+
+    #[test]
+    fn test_bitpal_seq2_empty() -> Result<(), Box<dyn Error>> {
+        let mut rng = rand::thread_rng();
+        let valid_letters = vec![b'A', b'C', b'G', b'T'];
+        // make seq2 the sequence that should be horizontal
+        let seq1 = generate_sequence_with_alphabet(&valid_letters, &mut rng, 1..64);
+        let seq2 = vec![];
+        let matrix = construct_matrix(&seq1, &seq2, 1, -1, -3);
+        let nw_score = matrix[seq2.len()][seq1.len()];
+        let bitpal = bitpal(&seq1, &seq2)?;
+        assert_eq!(bitpal, nw_score);
+
+        Ok(())
+    }
+
+    #[test]
+    fn test_bitpal_seq1_empty_seq2_empty() -> Result<(), Box<dyn Error>> {
+        // make seq2 the sequence that should be horizontal
+        let seq1 = vec![];
+        let seq2 = vec![];
         let matrix = construct_matrix(&seq1, &seq2, 1, -1, -3);
         let nw_score = matrix[seq2.len()][seq1.len()];
         let bitpal = bitpal(&seq1, &seq2)?;
