@@ -16,12 +16,15 @@ pub fn bitpal(seq1: &Vec<u8>, seq2: &Vec<u8>) -> Result<i32, InputTooLongError> 
         return Err(InputTooLongError);
     };
 
+    // create a set containing the used alphabet
     let mut alphabet: HashSet<u8> = HashSet::new();
     alphabet.extend(horizontal_seq.iter());
     alphabet.extend(vertical_seq.iter());
-
-    let all_ones: u64 = 2_u64.pow(horizontal_seq.len() as u32) - 1;
+    // build the needed match vectors
     let match_vectors = calculate_match_vectors(&horizontal_seq, &alphabet);
+
+    // vector containing horizontal_seq.len() 1's
+    let all_ones: u64 = 2_u64.pow(horizontal_seq.len() as u32) - 1;
 
     let mut delta_h_pos4: u64 = 0;
     let mut delta_h_pos3: u64 = 0;
