@@ -201,7 +201,7 @@ mod tests {
         Ok(())
     }
 
-    /// Helper function to fuzz test bitpal implementation where a random sequence with a length in the size_range is generated using the provided alphabet
+    /// Helper function to fuzz test BitPAl implementation where a random sequence with a length in the size_range is generated using the provided alphabet
     fn generate_sequence_with_alphabet(alphabet: &Vec<u8>, rng: &mut ThreadRng, size_range: Range<usize>) -> Vec<u8> {
         let seq_len = rng.gen_range(size_range);
         let mut seq = vec![];
@@ -263,10 +263,8 @@ mod tests {
         // make seq2 the sequence that should be horizontal
         let seq1 = vec![];
         let seq2 = generate_sequence_with_alphabet(&valid_letters, &mut rng, 1..64);
-        let matrix = construct_matrix(&seq1, &seq2, 1, -1, -3);
-        let nw_score = matrix[seq2.len()][seq1.len()];
         let bitpal = bitpal(&seq1, &seq2)?;
-        assert_eq!(bitpal, nw_score);
+        assert_eq!(bitpal, -3 * seq2.len() as i32);
 
         Ok(())
     }
@@ -278,10 +276,8 @@ mod tests {
         // make seq2 the sequence that should be horizontal
         let seq1 = generate_sequence_with_alphabet(&valid_letters, &mut rng, 1..64);
         let seq2 = vec![];
-        let matrix = construct_matrix(&seq1, &seq2, 1, -1, -3);
-        let nw_score = matrix[seq2.len()][seq1.len()];
         let bitpal = bitpal(&seq1, &seq2)?;
-        assert_eq!(bitpal, nw_score);
+        assert_eq!(bitpal, -3 * seq1.len() as i32);
 
         Ok(())
     }
@@ -291,10 +287,8 @@ mod tests {
         // make seq2 the sequence that should be horizontal
         let seq1 = vec![];
         let seq2 = vec![];
-        let matrix = construct_matrix(&seq1, &seq2, 1, -1, -3);
-        let nw_score = matrix[seq2.len()][seq1.len()];
         let bitpal = bitpal(&seq1, &seq2)?;
-        assert_eq!(bitpal, nw_score);
+        assert_eq!(bitpal, 0);
 
         Ok(())
     }
