@@ -2,7 +2,7 @@
 resolver = "2"
 
 members = [
-    "banded_global_alignment",
+    "banded_global_alignment", "bitpal",
     "fasta_reader",
     "hirschberg",
     "needleman_wunsch",
