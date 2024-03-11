@@ -41,10 +41,9 @@ pub fn bitpal(seq1: &Vec<u8>, seq2: &Vec<u8>) -> Result<i32, InputTooLongError> 
         // calculate max value
         let init_pos4 = current_match_vector & delta_h_neg3;
         let delta_v_pos4_shift = ((init_pos4 + delta_h_neg3) ^ delta_h_neg3) ^ init_pos4;
-        let delta_v_pos4 = delta_v_pos4_shift >> 1;
 
         // calculate rest of delta v high from high to low
-        let remain_delta_h_neg3 = delta_h_neg3 ^ delta_v_pos4;
+        let remain_delta_h_neg3 = delta_h_neg3 ^ (delta_v_pos4_shift >> 1);
         let delta_v_pos4_shift_or_match = delta_v_pos4_shift | current_match_vector;
         let init_pos3s = delta_h_neg2 & delta_v_pos4_shift_or_match;
         let delta_v_pos3_shift = ((init_pos3s << 1) + remain_delta_h_neg3) ^ remain_delta_h_neg3;
