@@ -10,3 +10,6 @@ clap = { version = "4.5.1", features = ["derive"] }
 fasta_reader = { path = "../fasta_reader" }
 needleman_wunsch = { path = "../needleman_wunsch" }
 rand = "0.9.0-alpha.0"
+
+[profile.dev]
+overflow-checks = false
