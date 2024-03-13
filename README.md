@@ -21,7 +21,7 @@ This repository contains the code for the following algorithms:
 - [Needleman-Wunsch](./needleman_wunsch)
 - [Hirschberg](./hirschberg)
 - [Banded global alignment](./banded_global_alignment)
-- [needleman-Wunsch using delta encoded scoring](./needleman_wunsch_delta_encoded)
+- [Needleman-Wunsch using delta encoded scoring](./needleman_wunsch_delta_encoded)
 - [BitPAl](./bitpal)
 
 ### Executing BitPAl
