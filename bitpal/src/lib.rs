@@ -6,7 +6,6 @@ mod bitpal_errors;
 
 /// The BitPAl algorithm implemented for scoring: M = 1, I = -1, G = -3
 /// With the restriction that seq1 or seq2 needs to fit in 1 computer word (= seq1 or seq2 <= 64 characters)
-#[allow(arithmetic_overflow)]
 pub fn bitpal(seq1: &Vec<u8>, seq2: &Vec<u8>) -> Result<i32, InputTooLongError> {
     // check validity of input
     let (ref horizontal_seq, vertical_seq) = if seq1.len() <= 64 {
