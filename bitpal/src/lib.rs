@@ -8,7 +8,7 @@ mod bitpal_errors;
 /// With the restriction that seq1 or seq2 needs to fit in 1 computer word (= seq1 or seq2 <= 64 characters)
 pub fn bitpal(seq1: &Vec<u8>, seq2: &Vec<u8>) -> Result<i32, InputTooLongError> {
     // check validity of input
-    let (ref horizontal_seq, vertical_seq) = if seq1.len() <= 64 {
+    let (horizontal_seq, vertical_seq) = if seq1.len() <= 64 {
         (seq1, seq2)
     } else if seq2.len() <= 64 {
         (seq2, seq1)
