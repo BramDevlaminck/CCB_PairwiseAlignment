@@ -21,7 +21,7 @@ fn main() {
     let result_score = bitpal(&seq1_chars, &seq2_chars);
 
     match result_score {
-        Ok(score) => println!("The resulting match score is: {}", score),
+        Ok(score) => println!("The resulting global alignment score is: {}", score),
         Err(error) => eprintln!("{}", error)
     }
 }
