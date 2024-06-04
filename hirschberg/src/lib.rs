@@ -29,6 +29,10 @@ pub fn nw_score(seq1: &[u8], seq2: &[u8], match_score: i32, mismatch_score: i32,
         }
         prev_row = current_row;
     }
+    // reverse the result if we should have been working reversed, and return
+    if reversed {
+        prev_row.reverse();
+    }
     prev_row
 }
 
@@ -42,8 +46,7 @@ pub fn hirschberg(seq1: &[u8], seq2: &[u8], match_score: i32, mismatch_score: i3
     let xmid = seq1.len() / 2;
 
     let score_l = nw_score(&seq1[..xmid], &seq2, match_score, mismatch_score, gap_score, false);
-    let mut score_r = nw_score(&seq1[xmid..], &seq2, match_score, mismatch_score, gap_score, true);
-    score_r.reverse();
+    let score_r = nw_score(&seq1[xmid..], &seq2, match_score, mismatch_score, gap_score, true);
 
     let total_score = score_l.iter().zip(score_r).map(|(&l, r)| l + r).collect::<Vec<i32>>();
     let ymid = total_score.iter().enumerate().max_by_key(|(_, &key)| key).map(|(i, _)| i).ok_or("Score L and Score R are empty, no argmax can be found")?;
@@ -83,7 +86,7 @@ mod tests {
         let seq2_chars = seq2.into_bytes();
 
         let res = nw_score(&seq1_chars, &seq2_chars, 1, -1, -1, true);
-        assert_eq!(res, vec![-7, -7, -5, -3, -3, -1, -1, 0]);
+        assert_eq!(res, vec![0, -1, -1, -3, -3, -5, -7, -7]);
         Ok(())
     }
 }
